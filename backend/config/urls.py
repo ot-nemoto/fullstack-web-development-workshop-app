@@ -10,6 +10,5 @@ router.register('loans', views.LoanViewSet)          # /api/loans/ と /api/loan
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/hello/', views.hello),
     path('api/', include(router.urls)),  # /api/ 以下にrouterで生成したURLを接続する
 ]
