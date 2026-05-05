@@ -1,4 +1,4 @@
-import { Book, Category } from '@/types'
+import { Book, Category, Loan } from '@/types'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -94,4 +94,39 @@ export async function deleteBook(id: number): Promise<void> {
     if (!res.ok) {
         throw new Error(`APIエラー: ${res.status}`)
     }
+}
+
+export async function createLoan(bookId: number, dueDate: string): Promise<Loan> {
+    const res = await fetch(`${API_URL}/api/loans/`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ book: bookId, due_date: dueDate }),
+    })
+    if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.book?.[0] ?? '貸出に失敗しました')
+        // ?.[0] はオプショナルチェーンで配列の最初の要素を取得する
+    }
+    return res.json()
+}
+
+export async function returnBook(loanId: number): Promise<Loan> {
+    const res = await fetch(`${API_URL}/api/loans/${loanId}/return/`, {
+        method: 'POST',
+        headers: authHeaders(),
+    })
+    if (!res.ok) {
+        throw new Error('返却に失敗しました')
+    }
+    return res.json()
+}
+
+export async function getMyLoans(): Promise<Loan[]> {
+    const res = await fetch(`${API_URL}/api/loans/`, {
+        headers: authHeaders(),
+    })
+    if (!res.ok) {
+        throw new Error('貸出履歴の取得に失敗しました')
+    }
+    return res.json()
 }

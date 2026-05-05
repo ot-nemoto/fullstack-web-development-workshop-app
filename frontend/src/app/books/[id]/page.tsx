@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getBook } from '@/lib/api'
 import DeleteButton from '@/components/DeleteButton'
+import LoanButton from '@/components/LoanButton'
 
 interface BookDetailPageProps {
     params: Promise<{ id: string }>  // paramsはURLパラメータを含むオブジェクト
@@ -37,7 +38,8 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
                         <dd>{book.available_count}冊</dd>
                     </div>
                 </dl>
-                <div className="flex gap-4 mt-6">
+                <div className="flex gap-4 mt-6 items-center">
+                    <LoanButton bookId={book.id} availableCount={book.available_count} />
                     <Link
                         href={`/books/${book.id}/edit`}
                         className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
