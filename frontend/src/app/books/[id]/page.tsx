@@ -3,6 +3,8 @@ import { getBook } from '@/lib/api'
 import DeleteButton from '@/components/DeleteButton'
 import LoanButton from '@/components/LoanButton'
 
+export const dynamic = 'force-dynamic'  // APIフェッチがあるため静的プリレンダリングを無効化する
+
 interface BookDetailPageProps {
     params: Promise<{ id: string }>  // paramsはURLパラメータを含むオブジェクト
 }

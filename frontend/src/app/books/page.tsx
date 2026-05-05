@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { getBooks } from '@/lib/api'
 import BookCard from '@/components/BookCard'
 
+export const dynamic = 'force-dynamic'  // APIフェッチがあるため静的プリレンダリングを無効化する
+
 export default async function BooksPage() {
     const books = await getBooks()  // Chapter 8で作ったAPI呼び出し関数
 
