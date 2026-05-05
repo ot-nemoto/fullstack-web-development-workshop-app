@@ -29,7 +29,7 @@ export default function EditBookPage() {
                 <BookForm
                     initialData={book}
                     categories={categories}
-                    onSubmit={(data) => updateBook(id, data)}
+                    onSubmit={async (data) => { await updateBook(id, data) }}
                     submitLabel="更新する"
                 />
             </main>
