@@ -1,3 +1,4 @@
+import os    # os モジュールは Python 標準ライブラリ。環境変数を読み取るのに使う
 from pathlib import Path
 from datetime import timedelta
 
@@ -55,12 +56,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 使用するDBの種類
-        'NAME': 'library',                      # データベース名
-        'USER': 'root',                         # ユーザー名
-        'PASSWORD': 'password',                 # パスワード
-        'HOST': 'db',                           # ホスト名（docker-composeのサービス名）
-        'PORT': '3306',                         # ポート番号
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME', 'library'),
+        # os.environ.get('変数名', デフォルト値) は環境変数がなければデフォルト値を使う
+        'USER': os.environ.get('DB_USER', 'root'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
+        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('DB_PORT', '3306'),
     }
 }
 
