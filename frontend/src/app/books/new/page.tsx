@@ -1,9 +1,17 @@
-import RequireAuth from '@/components/RequireAuth'
+'use client'
+
+import { useState, useEffect } from 'react'
 import { getCategories, createBook } from '@/lib/api'
 import BookForm from '@/components/BookForm'
+import RequireAuth from '@/components/RequireAuth'
+import { Category } from '@/types'
 
-export default async function NewBookPage() {
-    const categories = await getCategories()
+export default function NewBookPage() {
+    const [categories, setCategories] = useState<Category[]>([])
+
+    useEffect(() => {
+        getCategories().then(setCategories)
+    }, [])
 
     return (
         <RequireAuth>
@@ -11,7 +19,7 @@ export default async function NewBookPage() {
                 <h1 className="text-2xl font-bold mb-6">本の新規登録</h1>
                 <BookForm
                     categories={categories}
-                    onSubmit={createBook}
+                    onSubmit={async (data) => { await createBook(data) }}
                     submitLabel="登録する"
                 />
             </main>
