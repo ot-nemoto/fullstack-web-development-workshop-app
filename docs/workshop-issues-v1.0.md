@@ -151,9 +151,50 @@ FROM node:20-slim
 
 ---
 
+### Issue 5｜各章末：GitHub への push 手順・ブランチ運用方針がない
+
+**該当箇所**: 全章の末尾（まとめセクション）
+
+**問題**: Chapter 2 で Git の基本操作（add / commit / push）は教えているが、**各章の実装完了後に commit・push するよう促す指示が一切ない**。また、どのブランチで作業するかも明示されていない。
+
+**ブランチ運用方針**:
+
+初心者向けワークショップという性質を踏まえ、以下の方針を推奨する：
+
+| フェーズ | ブランチ | 理由 |
+|---------|---------|------|
+| Chapter 2〜13 | `master` のみ | 序盤からブランチを意識させると Git 操作の複雑さが学習の妨げになるため |
+| Chapter 14〜 | `develop` / `feature/xxx` | Chapter 14 でブランチ戦略を正式に学ぶタイミングで切り替える |
+
+**修正案**: 各章の「まとめ」の直前に以下の 🛠️ セクションを追加する。
+
+```markdown
+### 🛠️ ここまでの変更を GitHub に保存する
+
+この章で行った変更を commit して GitHub に push しましょう。
+
+\```bash
+git add .
+git commit -m "chapter XX: （この章で実装した内容の概要）"
+git push origin master
+\```
+
+commit メッセージの例：
+- `chapter 02: 開発環境を構築する`
+- `chapter 03: DjangoとNext.jsの全通を確認する`
+- `chapter 05: Djangoモデルを定義してマイグレーションする`
+```
+
+**対象章**: Chapter 2・3・5・6・7・8・9・10・11・12・13（コードの変更がある章すべて）
+
+> Chapter 14 では「ブランチ戦略とプルリクエスト」を学ぶため、そこで `master` 直push から develop / feature ブランチへの切り替えを案内する。
+
+---
+
 ## 修正方針
 
-上記4点について、ワークショップ教材リポジトリ（`fullstack-web-development-workshop`）の該当 Markdown ファイルを修正してください。
+上記5点について、ワークショップ教材リポジトリ（`fullstack-web-development-workshop`）の該当 Markdown ファイルを修正してください。
 
 - **Issue 1〜3**: Windows ユーザー向けの補足として `> **Windowsの方へ**` または `> **DevContainerの方へ**` の形式で追記（既存の記法と統一）
 - **Issue 4**: 2-5 に 🛠️ セクションを追加し、各ファイルの作成手順を記載。clone は「答え合わせ参照用」として位置づけを変更
+- **Issue 5**: 各章の「まとめ」直前に 🛠️ セクションとして commit・push 手順を追加。Chapter 2〜13 は `master` で運用し、Chapter 14 でブランチ戦略へ移行する流れにする
