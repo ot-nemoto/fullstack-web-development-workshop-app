@@ -266,6 +266,48 @@ Chapter 2-3「GitHubとリモートリポジトリを連携する」の `gh auth
 
 ---
 
+### Issue 7｜Chapter 2-5：DevContainer 内で git がリポジトリを認識しない
+
+**該当箇所**: `chapters/02_開発環境の構築.md` > 2-5 DevContainerの起動と確認
+
+**問題**: `docker-compose.yml` では `./backend:/workspace` および `./frontend:/workspace` とマウントしているため、コンテナ内の `/workspace` には各サービスのサブディレクトリのみが展開される。`.git` ディレクトリはリポジトリルートにあるため、コンテナ内では見えない。
+
+結果として、コンテナ内のターミナルで `git status` を実行すると以下のエラーになる：
+
+```
+fatal: not a git repository (or any parent up to mount point /)
+```
+
+Issue 5 で各章末に追加する `git add / commit / push` 手順は、コンテナ内から実行できない状態になっている。
+
+**修正案**: `docker-compose.yml` の両サービスにリポジトリルートを `/repo` としてマウントを追加する。
+
+```yaml
+services:
+  backend:
+    volumes:
+      - ./backend:/workspace:cached
+      - .:/repo:cached              # リポジトリルートをマウント（git操作用）
+      - gh-config:/root/.config/gh
+
+  frontend:
+    volumes:
+      - ./frontend:/workspace:cached
+      - .:/repo:cached              # リポジトリルートをマウント（git操作用）
+      - gh-config:/root/.config/gh
+```
+
+あわせて、Issue 5 の git 手順を以下のように変更する（`/repo` に移動してから実行）：
+
+```bash
+cd /repo
+git add .
+git commit -m "chapter XX: （この章で実装した内容の概要）"
+git push origin master
+```
+
+---
+
 ## 修正方針
 
 上記6点について、ワークショップ教材リポジトリ（`fullstack-web-development-workshop`）の該当 Markdown ファイルおよびサンプルリポジトリを修正してください。
@@ -274,3 +316,4 @@ Chapter 2-3「GitHubとリモートリポジトリを連携する」の `gh auth
 - **Issue 4**: 2-5 に 🛠️ セクションを追加し、各ファイルの作成手順を記載。clone は「答え合わせ参照用」として位置づけを変更
 - **Issue 5**: 各章の「まとめ」直前に 🛠️ セクションとして commit・push 手順を追加。Chapter 2〜13 は `master` で運用し、Chapter 14 でブランチ戦略へ移行する流れにする
 - **Issue 6**: 両 Dockerfile に `git` と `gh` を追加。`docker-compose.yml` に `gh-config` ボリュームを追加して認証情報を永続化（両コンテナ共有）。Chapter 2-3 の `gh auth login` はコンテナ内で1回実行すれば両コンテナで使える旨を明記。ホストからの流用は概念説明のみ
+- **Issue 7**: `docker-compose.yml` の両サービスに `.:/repo:cached` マウントを追加。Issue 5 の git 手順は `cd /repo` してから実行するよう変更
