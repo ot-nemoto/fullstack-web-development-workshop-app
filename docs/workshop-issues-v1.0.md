@@ -206,7 +206,9 @@ Issue 5 で各章末に `git add / commit / push` を追加する方針だが、
 | A | Windows ホストのターミナルで git を操作する | DevContainer と別のターミナルを使い分ける必要があり、初心者には混乱しやすい |
 | B | Dockerfile に git をインストールする | DevContainer 内で完結でき、初心者にわかりやすい ✅ 推奨 |
 
-**修正案（Option B）**: 両 Dockerfile に `git` を追加する。
+**修正案（Option B）**: 両 Dockerfile に `git` と `gh`（GitHub CLI）を追加する。
+
+`git push` には GitHub 認証が必要なため、`git` だけでなく `gh` も合わせてインストールする。
 
 **`.devcontainer/backend/Dockerfile`**
 ```dockerfile
@@ -217,6 +219,12 @@ RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
     pkg-config \
     git \
+    curl \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt-get update \
+    && apt-get install -y gh \
     && rm -rf /var/lib/apt/lists/*
 ```
 
@@ -226,6 +234,12 @@ FROM node:20-slim
 
 RUN apt-get update && apt-get install -y \
     git \
+    curl \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt-get update \
+    && apt-get install -y gh \
     && rm -rf /var/lib/apt/lists/*
 ```
 
