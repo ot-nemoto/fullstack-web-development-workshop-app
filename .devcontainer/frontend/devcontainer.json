@@ -2,6 +2,6 @@
   "name": "Frontend (Next.js)",
   "dockerComposeFile": "../../docker-compose.yml",
   "service": "frontend",
-  "workspaceFolder": "/workspace",
-  "postCreateCommand": "npm install"
+  "workspaceFolder": "/workspace/frontend",
+  "postCreateCommand": "cd /workspace/frontend && npm install"
 }

@@ -2,6 +2,6 @@
   "name": "Backend (Django)",
   "dockerComposeFile": "../../docker-compose.yml",
   "service": "backend",
-  "workspaceFolder": "/workspace",
-  "postCreateCommand": "pip install -r requirements.txt"
+  "workspaceFolder": "/workspace/backend",
+  "postCreateCommand": "pip install -r /workspace/backend/requirements.txt"
 }
