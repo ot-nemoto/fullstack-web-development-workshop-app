@@ -1,0 +1,40 @@
+services:
+  backend:                          # バックエンドサービス（Django / Python）
+    build:
+      context: .
+      dockerfile: .devcontainer/backend/Dockerfile
+    volumes:
+      - ./backend:/workspace:cached # backend/ をコンテナ内の /workspace に共有する
+    ports:
+      - "8000:8000"                 # ホストの8000番ポートをコンテナに繋ぐ
+    command: sleep infinity         # DevContainerが終了しないよう待機させる
+    environment:
+      - DB_HOST=db
+      - DB_NAME=library
+      - DB_USER=root
+      - DB_PASSWORD=password
+    depends_on:
+      - db                          # dbサービスが起動してから起動する
+
+  frontend:                         # フロントエンドサービス（Next.js / Node.js）
+    build:
+      context: .
+      dockerfile: .devcontainer/frontend/Dockerfile
+    volumes:
+      - ./frontend:/workspace:cached # frontend/ をコンテナ内の /workspace に共有する
+    ports:
+      - "3000:3000"                 # ホストの3000番ポートをコンテナに繋ぐ
+    command: sleep infinity
+
+  db:                               # データベースサービス（MySQL）
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: library
+    ports:
+      - "3306:3306"                 # ホストの3306番ポートをコンテナに繋ぐ
+    volumes:
+      - mysql_data:/var/lib/mysql   # データを永続化する（コンテナ削除後もデータが残る）
+
+volumes:
+  mysql_data:
