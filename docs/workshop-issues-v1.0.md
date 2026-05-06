@@ -77,8 +77,83 @@ python manage.py runserver 0.0.0.0:8000
 
 ---
 
+### Issue 4｜Chapter 2-5：Dockerfile・devcontainer.json の作成手順がない
+
+**該当箇所**: `chapters/02_開発環境の構築.md` > 2-5 DevContainerの起動と確認
+
+**問題**: ワークショップの目的は「一から自分の手で作り上げること」であるにもかかわらず、現在の記述は以下のようになっている：
+
+> 「本書のサンプルリポジトリをcloneします」
+> ```bash
+> git clone https://github.com/ot-nemoto/fullstack-web-development-workshop-app.git
+> ```
+
+これでは学習者は Dockerfile・devcontainer.json の中身を理解しないまま DevContainer を使うことになり、**教材として不完全**。
+
+**不足しているファイルと内容**:
+
+`docker-compose.yml` は Chapter 2 内で全内容が掲載されているが、以下のファイルの作成手順・内容が一切記載されていない：
+
+| ファイル | 役割 |
+|---------|------|
+| `.devcontainer/backend/Dockerfile` | Python 環境のビルド定義 |
+| `.devcontainer/backend/devcontainer.json` | Backend DevContainer の設定 |
+| `.devcontainer/frontend/Dockerfile` | Node.js 環境のビルド定義 |
+| `.devcontainer/frontend/devcontainer.json` | Frontend DevContainer の設定 |
+
+**修正案**: 2-5 に 🛠️ セクションとして各ファイルの作成手順を追加する。
+
+```markdown
+### 🛠️ DevContainer の設定ファイルを作成する
+
+以下のファイルを作成してください。
+
+**`.devcontainer/backend/Dockerfile`**
+\```dockerfile
+FROM python:3.12-slim
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+\```
+
+**`.devcontainer/backend/devcontainer.json`**
+\```json
+{
+  "name": "Backend (Django)",
+  "dockerComposeFile": "../../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "pip install -r requirements.txt"
+}
+\```
+
+**`.devcontainer/frontend/Dockerfile`**
+\```dockerfile
+FROM node:20-slim
+\```
+
+**`.devcontainer/frontend/devcontainer.json`**
+\```json
+{
+  "name": "Frontend (Next.js)",
+  "dockerComposeFile": "../../docker-compose.yml",
+  "service": "frontend",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "npm install"
+}
+\```
+```
+
+また、サンプルリポジトリの clone 手順は「答え合わせ用」の参照として残しつつ、**自分でファイルを作成してから DevContainer を起動する**という構成に変更することを推奨する。
+
+---
+
 ## 修正方針
 
-上記3点について、ワークショップ教材リポジトリ（`fullstack-web-development-workshop`）の該当 Markdown ファイルを修正してください。
+上記4点について、ワークショップ教材リポジトリ（`fullstack-web-development-workshop`）の該当 Markdown ファイルを修正してください。
 
-修正は**Windows ユーザー向けの補足**として `> **Windowsの方へ**` または `> **DevContainerの方へ**` の形式で追記するスタイルが既存の記法と統一されます（Chapter 2 内で同様の記法が使われています）。
+- **Issue 1〜3**: Windows ユーザー向けの補足として `> **Windowsの方へ**` または `> **DevContainerの方へ**` の形式で追記（既存の記法と統一）
+- **Issue 4**: 2-5 に 🛠️ セクションを追加し、各ファイルの作成手順を記載。clone は「答え合わせ参照用」として位置づけを変更
