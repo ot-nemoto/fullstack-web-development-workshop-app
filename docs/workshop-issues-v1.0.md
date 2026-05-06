@@ -191,10 +191,53 @@ commit メッセージの例：
 
 ---
 
+### Issue 6｜Chapter 2-5：DevContainer 内で git が使えない
+
+**該当箇所**: `chapters/02_開発環境の構築.md` > 2-5 DevContainerの起動と確認
+
+**問題**: 現在の Dockerfile には `git` がインストールされていないため、DevContainer 内のターミナルで git コマンドが使えない。
+
+Issue 5 で各章末に `git add / commit / push` を追加する方針だが、**実行する場所がない**状態になっている。
+
+解決策として以下の2択がある：
+
+| | 方法 | 評価 |
+|-|------|------|
+| A | Windows ホストのターミナルで git を操作する | DevContainer と別のターミナルを使い分ける必要があり、初心者には混乱しやすい |
+| B | Dockerfile に git をインストールする | DevContainer 内で完結でき、初心者にわかりやすい ✅ 推奨 |
+
+**修正案（Option B）**: 両 Dockerfile に `git` を追加する。
+
+**`.devcontainer/backend/Dockerfile`**
+```dockerfile
+FROM python:3.12-slim
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+```
+
+**`.devcontainer/frontend/Dockerfile`**
+```dockerfile
+FROM node:20-slim
+
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+```
+
+また、Chapter 2-3「GitHubとリモートリポジトリを連携する」の `gh auth login` 手順は、DevContainer 起動後にコンテナ内のターミナルで実行する旨を明記する。
+
+---
+
 ## 修正方針
 
-上記5点について、ワークショップ教材リポジトリ（`fullstack-web-development-workshop`）の該当 Markdown ファイルを修正してください。
+上記6点について、ワークショップ教材リポジトリ（`fullstack-web-development-workshop`）の該当 Markdown ファイルおよびサンプルリポジトリを修正してください。
 
 - **Issue 1〜3**: Windows ユーザー向けの補足として `> **Windowsの方へ**` または `> **DevContainerの方へ**` の形式で追記（既存の記法と統一）
 - **Issue 4**: 2-5 に 🛠️ セクションを追加し、各ファイルの作成手順を記載。clone は「答え合わせ参照用」として位置づけを変更
 - **Issue 5**: 各章の「まとめ」直前に 🛠️ セクションとして commit・push 手順を追加。Chapter 2〜13 は `master` で運用し、Chapter 14 でブランチ戦略へ移行する流れにする
+- **Issue 6**: 両 Dockerfile に `git` を追加。あわせて Chapter 2-3 の `gh auth login` はコンテナ内で実行する旨を明記
