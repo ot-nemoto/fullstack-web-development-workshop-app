@@ -243,7 +243,26 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 ```
 
-また、Chapter 2-3「GitHubとリモートリポジトリを連携する」の `gh auth login` 手順は、DevContainer 起動後にコンテナ内のターミナルで実行する旨を明記する。
+あわせて、`docker-compose.yml` に `gh-config` ボリュームを追加して認証情報を永続化する。両コンテナで同じボリュームを共有するため、**どちらか一方で `gh auth login` を1回実行すれば**、もう一方でも認証済みの状態で使える。
+
+```yaml
+services:
+  backend:
+    volumes:
+      - ./backend:/workspace:cached
+      - gh-config:/root/.config/gh  # gh認証情報を永続化（両コンテナで共有）
+
+  frontend:
+    volumes:
+      - ./frontend:/workspace:cached
+      - gh-config:/root/.config/gh  # gh認証情報を永続化（両コンテナで共有）
+
+volumes:
+  mysql_data:
+  gh-config:                        # gh認証情報の永続化ボリューム
+```
+
+Chapter 2-3「GitHubとリモートリポジトリを連携する」の `gh auth login` 手順は、DevContainer 起動後にコンテナ内のターミナルで実行する旨を明記する。また、ホストで認証済みの場合はボリュームマウントで流用できる仕組みがあることを概念説明として補足する（手順の記載は不要）。
 
 ---
 
@@ -254,4 +273,4 @@ RUN apt-get update && apt-get install -y \
 - **Issue 1〜3**: Windows ユーザー向けの補足として `> **Windowsの方へ**` または `> **DevContainerの方へ**` の形式で追記（既存の記法と統一）
 - **Issue 4**: 2-5 に 🛠️ セクションを追加し、各ファイルの作成手順を記載。clone は「答え合わせ参照用」として位置づけを変更
 - **Issue 5**: 各章の「まとめ」直前に 🛠️ セクションとして commit・push 手順を追加。Chapter 2〜13 は `master` で運用し、Chapter 14 でブランチ戦略へ移行する流れにする
-- **Issue 6**: 両 Dockerfile に `git` を追加。あわせて Chapter 2-3 の `gh auth login` はコンテナ内で実行する旨を明記
+- **Issue 6**: 両 Dockerfile に `git` と `gh` を追加。`docker-compose.yml` に `gh-config` ボリュームを追加して認証情報を永続化（両コンテナ共有）。Chapter 2-3 の `gh auth login` はコンテナ内で1回実行すれば両コンテナで使える旨を明記。ホストからの流用は概念説明のみ

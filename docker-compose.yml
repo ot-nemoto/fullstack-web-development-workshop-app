@@ -5,6 +5,7 @@ services:
       dockerfile: .devcontainer/backend/Dockerfile
     volumes:
       - ./backend:/workspace:cached # backend/ をコンテナ内の /workspace に共有する
+      - gh-config:/root/.config/gh  # gh認証情報を永続化する（両コンテナで共有）
     ports:
       - "8000:8000"                 # ホストの8000番ポートをコンテナに繋ぐ
     command: sleep infinity         # DevContainerが終了しないよう待機させる
@@ -22,6 +23,7 @@ services:
       dockerfile: .devcontainer/frontend/Dockerfile
     volumes:
       - ./frontend:/workspace:cached # frontend/ をコンテナ内の /workspace に共有する
+      - gh-config:/root/.config/gh  # gh認証情報を永続化する（両コンテナで共有）
     ports:
       - "3000:3000"                 # ホストの3000番ポートをコンテナに繋ぐ
     command: sleep infinity
@@ -38,3 +40,4 @@ services:
 
 volumes:
   mysql_data:
+  gh-config:                        # gh認証情報の永続化ボリューム
