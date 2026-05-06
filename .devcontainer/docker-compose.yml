@@ -10,6 +10,11 @@ services:
       - "8000:8000"                 # Django
       - "3000:3000"                 # Next.js
     command: sleep infinity         # DevContainerが終了しないよう待機させる
+    environment:
+      - DB_HOST=db
+      - DB_NAME=library
+      - DB_USER=root
+      - DB_PASSWORD=password
     depends_on:
       - db
 
