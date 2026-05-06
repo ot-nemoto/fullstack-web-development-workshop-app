@@ -1,0 +1,28 @@
+services:
+  dev:                              # 開発コンテナ（Python + Node.js）
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace:cached        # リポジトリルートをマウント（git操作可）
+      - gh-config:/root/.config/gh  # gh認証情報を永続化する
+    ports:
+      - "8000:8000"                 # Django
+      - "3000:3000"                 # Next.js
+    command: sleep infinity         # DevContainerが終了しないよう待機させる
+    depends_on:
+      - db
+
+  db:                               # データベースサービス（MySQL）
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: library
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql   # データを永続化する
+
+volumes:
+  mysql_data:
+  gh-config:                        # gh認証情報の永続化ボリューム
