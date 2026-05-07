@@ -14,7 +14,7 @@
 | [v1.0](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v1.0) | Chapter 3 | はじめての全通（Django API + Next.js 表示） | ✅ |
 | [v2.0](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v2.0) | Chapter 5 | データベース設計と Django モデル | ✅ |
 | [v2.1](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v2.1) | Chapter 6 | REST API の実装 | ✅ |
-| v2.2 | Chapter 7 | JavaScript と Next.js 基礎 | - |
+| [v2.2](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v2.2) | Chapter 7 | JavaScript と Next.js 基礎 | ✅ |
 | v2.3 | Chapter 8 | フロントエンドとバックエンドの接続 | - |
 | v2.4 | Chapter 9 | 本の管理機能 | - |
 | v2.5 | Chapter 10 | 認証 | - |
