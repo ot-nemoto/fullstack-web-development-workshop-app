@@ -7,7 +7,7 @@
     "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
     "ghcr.io/devcontainers/features/node:1": { "version": "22" }
   },
-  "postCreateCommand": "sudo apt-get install -y gcc default-libmysqlclient-dev pkg-config && pip install -r /workspace/backend/requirements.txt && npm install --prefix /workspace/frontend",
+  "postCreateCommand": "sudo apt-get install -y gcc libmariadb-dev pkgconf && pip install -r /workspace/backend/requirements.txt && npm install --prefix /workspace/frontend",
   "customizations": {
     "vscode": {
       "extensions": [
