@@ -2,16 +2,15 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# デフォルトからの変更点：
-# startproject が生成するランダムな SECRET_KEY を固定値に変更しています。
+# startproject が生成するランダムな SECRET_KEY をそのまま使用しています。
 # 本番環境では環境変数で安全な値を注入してください（Chapter 15 で対応します）。
-SECRET_KEY = 'django-insecure-local-dev-key-change-this'
+SECRET_KEY = 'django-insecure-k#8x!q2w9e$r6t5y@u3i1o0p7a4s*d%f^g&h(j)lz'
 
 DEBUG = True
 
-# デフォルトからの変更点：
-# startproject のデフォルトは [] （空リスト）です。
-# 開発中はすべてのホストからのアクセスを許可するため '*' を設定しています。
+# startproject からの変更点：
+# デフォルトは [] です。DevContainer 内から外部（ブラウザ）へのアクセスを
+# 許可するために '*' を設定しています。
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -67,7 +66,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# デフォルトからの変更点：
+# startproject からの変更点：
 # LANGUAGE_CODE のデフォルトは 'en-us'、TIME_ZONE のデフォルトは 'UTC' です。
 # 日本語・日本時間に設定しています。
 LANGUAGE_CODE = 'ja'
