@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'library',  # 追加するアプリはここに書く
 ]
 
 MIDDLEWARE = [
@@ -54,8 +55,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # 使用するDBの種類
+        'NAME': 'library',                      # データベース名
+        'USER': 'root',                         # ユーザー名
+        'PASSWORD': 'password',                 # パスワード
+        'HOST': 'db',                           # ホスト名（docker-composeのサービス名）
+        'PORT': '3306',                         # ポート番号
     }
 }
 
