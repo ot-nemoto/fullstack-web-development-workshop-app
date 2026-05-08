@@ -19,7 +19,7 @@
 | [v2.4](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v2.4) | Chapter 9 | 本の管理機能 | ✅ |
 | [v2.5](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v2.5) | Chapter 10 | 認証 | ✅ |
 | [v2.6](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v2.6) | Chapter 11 | 貸出管理機能 | ✅ |
-| v2.7 | Chapter 12 | バッチ処理 | - |
+| [v2.7](https://github.com/ot-nemoto/fullstack-web-development-workshop-app/releases/tag/v2.7) | Chapter 12 | バッチ処理 | ✅ |
 | v3.0 | Chapter 13 | テスト | - |
 | v3.1 | Chapter 14 | CI/CD | - |
 | v3.2 | Chapter 15 | 本番環境 | - |

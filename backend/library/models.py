@@ -30,6 +30,7 @@ class Loan(models.Model):
     STATUS_CHOICES = [  # 選択肢を定数として定義する
         ('active', '貸出中'),
         ('returned', '返却済み'),
+        ('overdue', '延滞中'),  # 追加
     ]
 
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # CASCADE: 本が削除されたら貸出も削除
