@@ -21,6 +21,9 @@ export default function Header() {
                 </Link>
                 <nav className="flex gap-4 items-center">
                     <Link href="/books" className="hover:underline">本の一覧</Link>
+                    {isLoggedIn && (
+                        <Link href="/loans" className="hover:underline">貸出履歴</Link>
+                    )}
                     {isLoggedIn ? (
                         <button onClick={handleLogout} className="hover:underline">
                             ログアウト
