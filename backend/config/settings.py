@@ -4,16 +4,15 @@ import os    # os モジュールは Python 標準ライブラリ。環境変数
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# startproject が生成するランダムな SECRET_KEY をそのまま使用しています。
-# 本番環境では環境変数で安全な値を注入してください（Chapter 15 で対応します）。
-SECRET_KEY = 'django-insecure-k#8x!q2w9e$r6t5y@u3i1o0p7a4s*d%f^g&h(j)lz'
+# SECRET_KEY は環境変数から読む。開発用デフォルト値はローカル専用
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-change-this')
 
-DEBUG = True
+# DEBUG は環境変数 DEBUG が 'True' のときだけ True になる
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-# startproject からの変更点：
-# デフォルトは [] です。DevContainer 内から外部（ブラウザ）へのアクセスを
-# 許可するために '*' を設定しています。
-ALLOWED_HOSTS = ['*']
+# 本番では公開するドメインを指定する。開発中は '*' で全許可
+ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS', '*')
+ALLOWED_HOSTS = ALLOWED_HOSTS_ENV.split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
